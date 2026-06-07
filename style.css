@@ -1,0 +1,84 @@
+/* Custom smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+    transition: background-color 0.5s ease;
+}
+
+/* Elegant minimalist scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.2);
+    border-radius: 99px;
+}
+.dark ::-webkit-scrollbar-thumb {
+    background: rgba(6, 182, 212, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #8b5cf6, #06b6d4);
+}
+
+/* Modern Premium Glass effect with subtle colored tint */
+.modern-glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+}
+.dark .modern-glass {
+    background: rgba(10, 11, 18, 0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Minimal clean card with colorful hovering outlines */
+.minimal-card {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dark .minimal-card {
+    background: rgba(12, 13, 21, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+.minimal-card:hover {
+    border-color: rgba(139, 92, 246, 0.4);
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 30px 60px -25px rgba(139, 92, 246, 0.15);
+}
+.dark .minimal-card:hover {
+    border-color: rgba(6, 182, 212, 0.5);
+    box-shadow: 0 35px 70px -25px rgba(6, 182, 212, 0.2);
+}
+
+/* RTL Persian Font Class */
+body.font-fa {
+    font-family: 'Vazirmatn', 'system-ui', sans-serif !important;
+}
+
+/* Ambient colored background lights */
+.ambient-light-violet {
+    filter: blur(120px);
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(0,0,0,0) 70%);
+}
+.ambient-light-cyan {
+    filter: blur(120px);
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, rgba(0,0,0,0) 70%);
+}
+.dark .ambient-light-violet {
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, rgba(0,0,0,0) 75%);
+}
+.dark .ambient-light-cyan {
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, rgba(0,0,0,0) 75%);
+}
+
+.project-card {
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}

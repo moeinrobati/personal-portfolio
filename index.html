@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moein | Creative Front-End Developer & UI Designer</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        fa: ['Vazirmatn', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fcfcfd',
+                            100: '#f4f5f7',
+                            200: '#eef0f3',
+                            900: '#090a10',
+                            950: '#040508',
+                        },
+                        accent: {
+                            violet: '#8b5cf6',
+                            cyan: '#06b6d4',
+                            rose: '#ec4899',
+                            DEFAULT: '#6366f1',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Vazirmatn:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Linking External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#f7f8fa] text-neutral-800 dark:bg-brand-950 dark:text-neutral-200 transition-colors duration-500 font-sans overflow-x-hidden antialiased">
+
+    <!-- Ambient Glow Blobs in Background -->
+    <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] ambient-light-violet pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] ambient-light-cyan pointer-events-none z-0"></div>
+
+    <!-- Scroll Progress -->
+    <div id="scroll-progress" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-accent-violet via-accent-cyan to-accent-rose z-50 transition-all duration-75" style="width: 0%"></div>
+
+    <!-- Minimal Header Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 modern-glass border-b border-neutral-200/10 dark:border-neutral-800/10 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 sm:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer group" onclick="document.getElementById('hero').scrollIntoView()">
+                    <img src="https://uploads.onecompiler.io/44rbvj9gq/44rbtjk82/Gemini_Generated_Image_od7t7mod7t7mod7t.png" alt="Logo" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-cover shadow-sm transition-transform group-hover:scale-105">
+                    <span class="font-bold tracking-tight text-neutral-900 dark:text-neutral-50 text-sm sm:text-base bg-gradient-to-r from-neutral-900 to-neutral-600 dark:from-white dark:to-neutral-400 bg-clip-text text-transparent" data-i18n="nav_logo">
+                        Moein Dev&design
+                    </span>
+                </div>
+
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-8 rtl:space-x-reverse text-xs tracking-wider uppercase font-semibold text-neutral-500 dark:text-neutral-400">
+                    <a href="#hero" class="hover:text-accent-violet dark:hover:text-accent-cyan transition-colors py-2" data-i18n="nav_home">Home</a>
+                    <a href="#about" class="hover:text-accent-violet dark:hover:text-accent-cyan transition-colors py-2" data-i18n="nav_about">About</a>
+                    <a href="#skills" class="hover:text-accent-violet dark:hover:text-accent-cyan transition-colors py-2" data-i18n="nav_skills">Skills</a>
+                    <a href="#projects" class="hover:text-accent-violet dark:hover:text-accent-cyan transition-colors py-2" data-i18n="nav_projects">Projects</a>
+                    <a href="#contact" class="hover:text-accent-violet dark:hover:text-accent-cyan transition-colors py-2" data-i18n="nav_contact">Contact</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-4">
+                    <!-- Language Toggle -->
+                    <button id="lang-toggle" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-neutral-200 dark:border-neutral-800/80 hover:border-accent-violet/40 hover:bg-neutral-100 dark:hover:bg-neutral-900 text-[11px] font-bold tracking-wider transition-all duration-200">
+                        <span id="lang-flag">🇮🇷</span>
+                        <span id="lang-text" class="uppercase">FA</span>
+                    </button>
+
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-xl border border-neutral-200 dark:border-neutral-800/80 hover:bg-neutral-100 dark:hover:bg-neutral-900 text-neutral-600 dark:text-neutral-400 transition-colors" aria-label="Toggle Theme">
+                        <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+                    </button>
+
+                    <!-- Mobile Menu Trigger -->
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl border border-neutral-200 dark:border-neutral-800/80 hover:bg-neutral-100 dark:hover:bg-neutral-900 text-neutral-600 dark:text-neutral-400">
+                        <i id="mobile-menu-icon" class="fa-solid fa-bars text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden modern-glass border-t border-neutral-200/10 px-6 py-4 space-y-2 shadow-xl">
+            <a href="#hero" class="block py-2.5 px-4 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-900 text-sm font-medium" data-i18n="nav_home">Home</a>
+            <a href="#about" class="block py-2.5 px-4 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-900 text-sm font-medium" data-i18n="nav_about">About</a>
+            <a href="#skills" class="block py-2.5 px-4 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-900 text-sm font-medium" data-i18n="nav_skills">Skills</a>
+            <a href="#projects" class="block py-2.5 px-4 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-900 text-sm font-medium" data-i18n="nav_projects">Projects</a>
+            <a href="#contact" class="block py-2.5 px-4 rounded-xl hover:bg-neutral-100 dark:hover:bg-neutral-900 text-sm font-medium" data-i18n="nav_contact">Contact</a>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="relative z-10 max-w-6xl mx-auto px-6 sm:px-8">
+
+        <!-- HERO SECTION -->
+        <section id="hero" class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
+            <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-12 relative z-10">
+                
+                <!-- Text Block -->
+                <div class="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-start space-y-8">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-accent-violet/10 to-accent-cyan/10 text-accent-violet dark:text-accent-cyan text-xs font-semibold border border-accent-violet/20">
+                        <span class="w-2 h-2 rounded-full bg-accent-cyan animate-pulse"></span>
+                        <span data-i18n="hero_badge">Available for Creative Front-End Commissions</span>
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] text-neutral-900 dark:text-white">
+                        <span data-i18n="hero_title_p1">Hi, I am</span> <span class="bg-gradient-to-r from-accent-violet via-accent-cyan to-accent-rose bg-clip-text text-transparent">Moein</span>
+                        <br>
+                        <span data-i18n="hero_title_p2" class="text-3xl sm:text-4xl lg:text-5xl font-light text-neutral-500 dark:text-neutral-400 mt-2 block">Creative Front-End Developer</span>
+                    </h1>
+                    
+                    <p class="text-neutral-500 dark:text-neutral-400 max-w-xl text-sm sm:text-base leading-relaxed" data-i18n="hero_desc">
+                        Designing & engineering aesthetic layouts, rich visual interactions, and clean codebases. Focused entirely on translating premium mockups into pixel-perfect digital experiences.
+                    </p>
+                    
+                    <!-- Call To Actions -->
+                    <div class="flex flex-col sm:flex-row gap-3.5 w-full sm:w-auto">
+                        <a href="#projects" class="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-accent-violet to-accent-cyan hover:opacity-95 text-white text-xs uppercase tracking-wider font-bold transition-all text-center flex items-center justify-center gap-2 shadow-lg shadow-accent-violet/20">
+                            <span data-i18n="hero_cta_projects">View Projects</span>
+                            <i class="fa-solid fa-arrow-right rtl:rotate-180 text-[10px]"></i>
+                        </a>
+                        <a href="#contact" class="px-7 py-3.5 rounded-2xl border border-neutral-200 dark:border-neutral-800/80 hover:border-accent-violet/40 hover:bg-neutral-100 dark:hover:bg-neutral-900/60 text-xs uppercase tracking-wider font-bold text-neutral-700 dark:text-neutral-300 transition-all text-center">
+                            <span data-i18n="hero_cta_contact">Discuss Ideas</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- PHYSICS SANDBOX PLAYGROUND BOX -->
+                <div class="lg:col-span-5 flex flex-col justify-center items-center relative w-full max-w-[430px] mx-auto space-y-4">
+                    <div class="relative w-full aspect-square border border-neutral-200/50 dark:border-neutral-800/40 rounded-3xl bg-white/40 dark:bg-brand-900/10 backdrop-blur-[4px] overflow-hidden flex items-center justify-center shadow-lg">
+                        <canvas id="sandbox-canvas" class="absolute inset-0 w-full h-full cursor-crosshair"></canvas>
+                        
+                        <div class="absolute top-4 left-4 pointer-events-none flex flex-col gap-0.5">
+                            <span class="text-[9px] uppercase tracking-widest font-extrabold text-neutral-400" data-i18n="sandbox_title">Gravity Mesh Sandbox</span>
+                            <span class="text-[8px] text-accent-cyan font-bold tracking-wider" id="fps-counter">60 FPS • ACTIVE</span>
+                        </div>
+
+                        <div class="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-brand-900/95 p-3 rounded-2xl border border-neutral-200/50 dark:border-neutral-800/60 backdrop-blur-md flex flex-col gap-1 shadow-md pointer-events-auto">
+                            <div class="flex justify-between items-center text-[9px] font-extrabold tracking-wider text-neutral-400">
+                                <span data-i18n="sandbox_instruction">MOVE MOUSE TO WARP GRID • CLICK TO SHOOT WAVE</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sandbox Controllers Box -->
+                    <div class="w-full bg-white/70 dark:bg-brand-900/40 border border-neutral-200/50 dark:border-neutral-800/40 rounded-2xl p-4 flex flex-col gap-3 backdrop-blur-sm shadow-sm">
+                        <div class="flex justify-between items-center border-b border-neutral-200/50 dark:border-neutral-800/20 pb-2">
+                            <span class="text-[10px] font-extrabold tracking-widest text-neutral-400 uppercase" data-i18n="adjust_physics">Sandbox Parameters</span>
+                            <button id="reset-physics" class="text-[9px] font-bold text-accent-rose hover:underline" data-i18n="reset_mesh">Reset Grid</button>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 text-[9px] font-bold text-neutral-500 dark:text-neutral-400">
+                            <div class="flex flex-col gap-1.5">
+                                <div class="flex justify-between">
+                                    <span data-i18n="gravity_force">Gravity Field</span>
+                                    <span id="gravity-val">120</span>
+                                </div>
+                                <input id="slider-gravity" type="range" min="50" max="250" value="120" class="w-full accent-accent-violet cursor-pointer bg-neutral-200 dark:bg-neutral-800 h-1 rounded-full appearance-none">
+                            </div>
+
+                            <div class="flex flex-col gap-1.5">
+                                <div class="flex justify-between">
+                                    <span data-i18n="elasticity">Mesh Elasticity</span>
+                                    <span id="elastic-val">0.08</span>
+                                </div>
+                                <input id="slider-elastic" type="range" min="1" max="15" value="8" class="w-full accent-accent-cyan cursor-pointer bg-neutral-200 dark:bg-neutral-800 h-1 rounded-full appearance-none">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer z-10" onclick="document.getElementById('about').scrollIntoView()">
+                <span class="text-[9px] text-neutral-400 uppercase tracking-widest font-semibold" data-i18n="hero_scroll_down">Scroll</span>
+                <i class="fa-solid fa-chevron-down text-accent-violet dark:text-accent-cyan text-sm"></i>
+            </div>
+        </section>
+
+        <!-- ABOUT ME SECTION -->
+        <section id="about" class="py-24 relative border-t border-neutral-200/10 dark:border-neutral-800/10">
+            <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
+                <span class="text-xs uppercase tracking-widest font-bold text-accent-violet dark:text-accent-cyan" data-i18n="about_badge">Profile</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white" data-i18n="about_title">The Core Principle</h2>
+                <div class="w-12 h-[2px] bg-gradient-to-r from-accent-violet to-accent-cyan mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="minimal-card p-6 sm:p-8 rounded-3xl relative overflow-hidden group">
+                        <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-accent-violet via-accent-cyan to-accent-rose"></div>
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-4 pb-6 border-b border-neutral-200/60 dark:border-neutral-800/40">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-accent-violet/10 to-accent-cyan/10 text-accent-violet dark:text-accent-cyan flex items-center justify-center text-lg border border-accent-violet/20">
+                                    <i class="fa-solid fa-compass"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-base text-neutral-900 dark:text-white" data-i18n="about_profile_name">Moein Robati</h3>
+                                    <p class="text-xs text-neutral-500 dark:text-neutral-400 font-semibold" data-i18n="about_profile_title">Front-End Developer & Designer</p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div>
+                                    <div class="font-extrabold text-xl text-accent-violet dark:text-accent-cyan">+2</div>
+                                    <div class="text-[10px] text-neutral-400 uppercase tracking-wider font-semibold mt-1" data-i18n="about_stat_experience">Years</div>
+                                </div>
+                                <div>
+                                    <div class="font-extrabold text-xl text-accent-violet dark:text-accent-cyan">10+</div>
+                                    <div class="text-[10px] text-neutral-400 uppercase tracking-wider font-semibold mt-1" data-i18n="about_stat_projects">UIs Made</div>
+                                </div>
+                                <div>
+                                    <div class="font-extrabold text-xl text-accent-violet dark:text-accent-cyan">95%</div>
+                                    <div class="text-[10px] text-neutral-400 uppercase tracking-wider font-semibold mt-1" data-i18n="about_stat_clients">Precision</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 space-y-6">
+                    <h3 class="text-xl font-bold text-neutral-900 dark:text-white" data-i18n="about_intro_title">Form Follows Function</h3>
+                    <p class="text-neutral-500 dark:text-neutral-400 leading-relaxed text-sm sm:text-base" data-i18n="about_intro_desc">
+                        Instead of crowded graphics, I prioritize absolute legibility, spatial balance, and crisp interactions. Every project begins in Figma as wireframes and evolves into clean, fluid codes using modern markup and styles.
+                    </p>
+
+                    <div class="pt-4 space-y-6">
+                        <h4 class="text-xs font-bold uppercase tracking-widest text-neutral-400" data-i18n="about_timeline_title">Work Milestones</h4>
+                        
+                        <div class="space-y-6 border-l rtl:border-l-0 rtl:border-r border-neutral-200 dark:border-neutral-800/60 pl-6 rtl:pl-0 rtl:pr-6 relative">
+                            <div class="relative space-y-1.5">
+                                <div class="absolute ltr:-left-[29px] rtl:-right-[29px] top-1.5 w-2 h-2 rounded-full bg-accent-violet ring-4 ring-accent-violet/20"></div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-accent-violet dark:text-accent-cyan" data-i18n="about_milestone1_date">2026 - Present</span>
+                                <h5 class="font-bold text-sm text-neutral-900 dark:text-white" data-i18n="about_milestone1_title">Lead Front-End & Creative Specialist</h5>
+                                <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">Developing interactive front-ends using React, Next.js, and implementing custom Vector arts & interactive UI layouts.</p>
+                            </div>
+
+                            <div class="relative space-y-1.5">
+                                <div class="absolute ltr:-left-[29px] rtl:-right-[29px] top-1.5 w-2 h-2 rounded-full bg-neutral-300 dark:bg-neutral-800"></div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400" data-i18n="about_milestone2_date">2024 - 2026</span>
+                                <h5 class="font-bold text-sm text-neutral-900 dark:text-white" data-i18n="about_milestone2_title">Front-End UI Architect</h5>
+                                <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">Crafted modular layouts and high-performance user spaces using pure JavaScript, CSS Grid architectures, and Figma design files.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section id="skills" class="py-24 relative border-t border-neutral-200/10 dark:border-neutral-800/10">
+            <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
+                <span class="text-xs uppercase tracking-widest font-bold text-accent-violet dark:text-accent-cyan" data-i18n="skills_badge">Stack</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white" data-i18n="skills_title">The Technical Palette</h2>
+                <div class="w-12 h-[2px] bg-gradient-to-r from-accent-violet to-accent-cyan mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- UI Frameworks -->
+                <div class="minimal-card p-6 rounded-3xl space-y-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent-violet to-accent-indigo"></div>
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-accent-violet/10 text-accent-violet flex items-center justify-center text-sm border border-accent-violet/20">
+                            <i class="fa-solid fa-code"></i>
+                        </span>
+                        <h3 class="font-bold text-sm uppercase tracking-wide text-neutral-800 dark:text-neutral-200" data-i18n="skills_cat_frontend">UI Frameworks</h3>
+                    </div>
+                    <div class="space-y-4 text-xs font-semibold text-neutral-500">
+                        <div class="space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-neutral-800 dark:text-neutral-300">React.js / Next.js</span>
+                                <span class="text-accent-violet">95%</span>
+                            </div>
+                            <div class="h-[2px] bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                                <div class="skill-progress-bar h-full bg-gradient-to-r from-accent-violet to-accent-indigo rounded-full transition-all duration-1000 ease-out" style="width: 0%" data-width="95%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-neutral-800 dark:text-neutral-300">TypeScript Engine</span>
+                                <span class="text-accent-violet">88%</span>
+                            </div>
+                            <div class="h-[2px] bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                                <div class="skill-progress-bar h-full bg-gradient-to-r from-accent-violet to-accent-indigo rounded-full transition-all duration-1000 ease-out" style="width: 0%" data-width="88%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-neutral-800 dark:text-neutral-300">Tailwind CSS & Utility Style</span>
+                                <span class="text-accent-violet">98%</span>
+                            </div>
+                            <div class="h-[2px] bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                                <div class="skill-progress-bar h-full bg-gradient-to-r from-accent-violet to-accent-indigo rounded-full transition-all duration-1000 ease-out" style="width: 0%" data-width="98%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Motion & Vector -->
+                <div class="minimal-card p-6 rounded-3xl space-y-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent-cyan to-accent-violet"></div>
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-accent-cyan/10 text-accent-cyan flex items-center justify-center text-sm border border-accent-cyan/20">
+                            <i class="fa-solid fa-bezier-curve"></i>
+                        </span>
+                        <h3 class="font-bold text-sm uppercase tracking-wide text-neutral-800 dark:text-neutral-200" data-i18n="skills_cat_creative">Motion & Vector</h3>
+                    </div>
+                    <div class="space-y-4 text-xs font-semibold text-neutral-500">
+                        <div class="space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-neutral-800 dark:text-neutral-300">SVG Animation & CSS Kinetic</span>
+                                <span class="text-accent-cyan">90%</span>
+                            </div>
+                            <div class="h-[2px] bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                                <div class="skill-progress-bar h-full bg-gradient-to-r from-accent-cyan to-accent-violet rounded-full transition-all duration-1000 ease-out" style="width: 0%" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-neutral-800 dark:text-neutral-300">Canvas API & Custom Physics</span>
+                                <span class="text-accent-cyan">85%</span>
+                            </div>
+                            <div class="h-[2px] bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                                <div class="skill-progress-bar h-full bg-gradient-to-r from-accent-cyan to-accent-violet rounded-full transition-all duration-1000 ease-out" style="width: 0%" data-width="85%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-neutral-800 dark:text-neutral-300">Micro-interactions Logic</span>
+                                <span class="text-accent-cyan">92%</span>
+                            </div>
+                            <div class="h-[2px] bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                                <div class="skill-progress-bar h-full bg-gradient-to-r from-accent-cyan to-accent-violet rounded-full transition-all duration-1000 ease-out" style="width: 0%" data-width="92%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UI/UX Design -->
+                <div class="minimal-card p-6 rounded-3xl space-y-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent-rose to-accent-violet"></div>
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-accent-rose/10 text-accent-rose flex items-center justify-center text-sm border border-accent-rose/20">
+                            <i class="fa-solid fa-compass"></i>
+                        </span>
+                        <h3 class="font-bold text-sm uppercase tracking-wide text-neutral-800 dark:text-neutral-200" data-i18n="skills_cat_ui">UI/UX Design</h3>
+                    </div>
+                    <div class="space-y-4 text-xs font-semibold text-neutral-500">
+                        <div class="space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-neutral-800 dark:text-neutral-300">Figma Wireframing</span>
+                                <span class="text-accent-rose">90%</span>
+                            </div>
+                            <div class="h-[2px] bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                                <div class="skill-progress-bar h-full bg-gradient-to-r from-accent-rose to-accent-violet rounded-full transition-all duration-1000 ease-out" style="width: 0%" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-neutral-800 dark:text-neutral-300">Minimal Design Systems</span>
+                                <span class="text-accent-rose">85%</span>
+                            </div>
+                            <div class="h-[2px] bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                                <div class="skill-progress-bar h-full bg-gradient-to-r from-accent-rose to-accent-violet rounded-full transition-all duration-1000 ease-out" style="width: 0%" data-width="85%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex justify-between">
+                                <span class="text-neutral-800 dark:text-neutral-300">Interactive Prototyping</span>
+                                <span class="text-accent-rose">75%</span>
+                            </div>
+                            <div class="h-[2px] bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                                <div class="skill-progress-bar h-full bg-gradient-to-r from-accent-rose to-accent-violet rounded-full transition-all duration-1000 ease-out" style="width: 0%" data-width="75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS SECTION -->
+        <section id="projects" class="py-24 relative border-t border-neutral-200/10 dark:border-neutral-800/10">
+            <div class="text-center max-w-xl mx-auto mb-12 space-y-3">
+                <span class="text-xs uppercase tracking-widest font-bold text-accent-violet dark:text-accent-cyan" data-i18n="projects_badge">Works</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white" data-i18n="projects_title">Interactive Artifacts</h2>
+                <div class="w-12 h-[2px] bg-gradient-to-r from-accent-violet to-accent-cyan mx-auto"></div>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap justify-center gap-2 mb-12 text-xs font-bold tracking-wider uppercase">
+                <button class="filter-btn px-4 py-2 rounded-xl bg-gradient-to-r from-accent-violet to-accent-cyan text-white transition-all shadow-md shadow-accent-violet/10" data-filter="all" data-i18n="filter_all">All</button>
+                <button class="filter-btn px-4 py-2 rounded-xl border border-neutral-200 dark:border-neutral-800/80 text-neutral-500 hover:border-accent-violet/30 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-all" data-filter="motion" data-i18n="filter_motion">Interactive UI</button>
+                <button class="filter-btn px-4 py-2 rounded-xl border border-neutral-200 dark:border-neutral-800/80 text-neutral-500 hover:border-accent-violet/30 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-all" data-filter="creative" data-i18n="filter_creative">Figma Layouts</button>
+            </div>
+
+            <!-- Projects Grid -->
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Project 1 -->
+                <div class="project-card minimal-card rounded-3xl overflow-hidden group relative" data-category="motion">
+                    <div class="relative overflow-hidden aspect-[16/10] bg-neutral-100 dark:bg-[#0c0d16] border-b border-neutral-200/50 dark:border-neutral-800/10 flex items-center justify-center p-6">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-accent-violet/5 to-accent-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="w-12 h-12 rounded-2xl bg-neutral-200/50 dark:bg-neutral-900 text-accent-violet dark:text-accent-cyan flex items-center justify-center text-lg border border-neutral-300/10 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-gamepad animate-pulse"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h4 class="font-bold text-base text-neutral-900 dark:text-white group-hover:text-accent-violet transition-colors" data-i18n="proj1_title">Gravity Sandbox Widget</h4>
+                        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed font-semibold" data-i18n="proj1_desc">High-performance canvas physics sandbox that fits perfectly in any responsive dashboard widget layout.</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-neutral-200/10">
+                            <span class="text-[9px] uppercase tracking-wider font-extrabold text-neutral-400">Canvas API + HTML5</span>
+                            <a href="#projects" class="text-[10px] uppercase font-bold text-accent-violet dark:text-accent-cyan hover:opacity-85 flex items-center gap-1">
+                                <span data-i18n="proj_demo">Demo</span> <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card minimal-card rounded-3xl overflow-hidden group relative" data-category="motion">
+                    <div class="relative overflow-hidden aspect-[16/10] bg-neutral-100 dark:bg-[#0c0d16] border-b border-neutral-200/50 dark:border-neutral-800/10 flex items-center justify-center p-6">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-accent-cyan/5 to-accent-rose/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="w-12 h-12 rounded-2xl bg-neutral-200/50 dark:bg-neutral-900 text-accent-cyan dark:text-accent-rose flex items-center justify-center text-lg border border-neutral-300/10 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-wind"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h4 class="font-bold text-base text-neutral-900 dark:text-white group-hover:text-accent-cyan transition-colors" data-i18n="proj2_title">Velocity Dashboard</h4>
+                        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed font-semibold" data-i18n="proj2_desc">High-performance custom SVG charts combined with interactive micro-animations for cloud-based system parameters.</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-neutral-200/10">
+                            <span class="text-[9px] uppercase tracking-wider font-extrabold text-neutral-400">SVG + JS Animation</span>
+                            <a href="#projects" class="text-[10px] uppercase font-bold text-accent-cyan dark:text-accent-rose hover:opacity-85 flex items-center gap-1">
+                                <span data-i18n="proj_demo">Demo</span> <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card minimal-card rounded-3xl overflow-hidden group relative" data-category="creative">
+                    <div class="relative overflow-hidden aspect-[16/10] bg-neutral-100 dark:bg-[#0c0d16] border-b border-neutral-200/50 dark:border-neutral-800/10 flex items-center justify-center p-6">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-accent-rose/5 to-accent-violet/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="w-12 h-12 rounded-2xl bg-neutral-200/50 dark:bg-neutral-900 text-accent-rose dark:text-accent-violet flex items-center justify-center text-lg border border-neutral-300/10 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <h4 class="font-bold text-base text-neutral-900 dark:text-white group-hover:text-accent-rose transition-colors" data-i18n="proj3_title">Holo UI Framework</h4>
+                        <p class="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed font-semibold" data-i18n="proj3_desc">A pristine web UI Design system created entirely from scratch, utilizing standard CSS Flex/Grid architectures.</p>
+                        <div class="flex items-center justify-between pt-2 border-t border-neutral-200/10">
+                            <span class="text-[9px] uppercase tracking-wider font-extrabold text-neutral-400">Tailwind + HTML5</span>
+                            <a href="#projects" class="text-[10px] uppercase font-bold text-accent-rose dark:text-accent-violet hover:opacity-85 flex items-center gap-1">
+                                <span data-i18n="proj_demo">Demo</span> <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="py-24 relative border-t border-neutral-200/10 dark:border-neutral-800/10">
+            <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+            <div class="text-center max-w-xl mx-auto mb-16 space-y-3">
+                <span class="text-xs uppercase tracking-widest font-bold text-accent-violet dark:text-accent-cyan" data-i18n="contact_badge">Reach</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white" data-i18n="contact_title">Initiate Discussion</h2>
+                <div class="w-12 h-[2px] bg-gradient-to-r from-accent-violet to-accent-cyan mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <!-- Contact Form -->
+                <div class="lg:col-span-7">
+                    <div class="minimal-card p-6 sm:p-8 rounded-3xl relative overflow-hidden">
+                        <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-accent-violet via-accent-cyan to-accent-rose"></div>
+                        <form id="contact-form" class="space-y-6" onsubmit="handleFormSubmit(event)">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-400" data-i18n="form_name_lbl">Identity</label>
+                                    <input type="text" id="form-name" name="name" required class="w-full px-4 py-3 rounded-xl bg-neutral-100/50 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800/85 focus:border-accent-violet dark:focus:border-accent-cyan focus:outline-none transition-colors text-xs font-semibold" placeholder="E.g., Ryan Gosling">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-400" data-i18n="form_email_lbl">Email coordinates</label>
+                                    <input type="email" id="form-email" name="email" required class="w-full px-4 py-3 rounded-xl bg-neutral-100/50 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800/85 focus:border-accent-violet dark:focus:border-accent-cyan focus:outline-none transition-colors text-xs font-semibold" placeholder="ryan@gosling.io">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-400" data-i18n="form_service_lbl">Agenda</label>
+                                <select id="form-service" name="service" class="w-full px-4 py-3 rounded-xl bg-neutral-100/50 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800/85 focus:border-accent-violet dark:focus:border-accent-cyan focus:outline-none transition-colors text-xs font-semibold">
+                                    <option value="landing" data-i18n="opt_landing">Responsive Landing Page</option>
+                                    <option value="design" data-i18n="opt_design">Figma Prototyping</option>
+                                    <option value="other" data-i18n="opt_other">Other Collaboration</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-[10px] font-bold uppercase tracking-wider text-neutral-400" data-i18n="form_msg_lbl">Aspiration</label>
+                                <textarea id="form-message" name="message" required rows="4" class="w-full px-4 py-3 rounded-xl bg-neutral-100/50 dark:bg-neutral-900/40 border border-neutral-200 dark:border-neutral-800/85 focus:border-accent-violet dark:focus:border-accent-cyan focus:outline-none transition-colors text-xs font-semibold resize-none" placeholder="Provide clear briefing regarding your layout requests..."></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-accent-violet to-accent-cyan hover:opacity-95 text-white text-xs font-extrabold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md shadow-accent-violet/10">
+                                <span id="form-submit-text" data-i18n="form_submit_btn">Transmit Message</span>
+                                <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Info Block -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="minimal-card p-6 sm:p-8 rounded-3xl space-y-8 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-accent-rose via-accent-violet to-accent-cyan"></div>
+                        <h3 class="font-bold text-base text-neutral-900 dark:text-white" data-i18n="contact_info_title">Direct Touchpoints</h3>
+                        
+                        <div class="space-y-6 text-xs font-semibold">
+                            <div class="flex items-center gap-4">
+                                <span class="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-900 text-accent-violet dark:text-accent-cyan flex items-center justify-center text-sm border border-neutral-200/40 dark:border-neutral-800/40">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </span>
+                                <div>
+                                    <div class="text-[9px] font-bold uppercase tracking-wider text-neutral-400">Electronic mail</div>
+                                    <a href="mailto:moeinrobati13861386@gmail.com" class="hover:text-accent-cyan transition-colors text-neutral-800 dark:text-neutral-200">moeinrobati13861386@gmail.com</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <span class="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-900 text-accent-violet dark:text-accent-cyan flex items-center justify-center text-sm border border-neutral-200/40 dark:border-neutral-800/40">
+                                    <i class="fa-solid fa-map-pin"></i>
+                                </span>
+                                <div>
+                                    <div class="text-[9px] font-bold uppercase tracking-wider text-neutral-400">Current Position</div>
+                                    <div class="text-neutral-800 dark:text-neutral-200 font-semibold" data-i18n="contact_loc">mashhad, Iran (GMT+3.5)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-neutral-200/60 dark:border-neutral-800/40 space-y-4">
+                            <h4 class="font-bold text-[10px] uppercase tracking-widest text-neutral-400" data-i18n="contact_socials_title">Alternative Portals</h4>
+                            <div class="flex gap-2">
+                                <a href="https://github.com/moeinrobati" target="_blank" class="w-10 h-10 rounded-xl border border-neutral-200 dark:border-neutral-800/80 hover:border-accent-violet/40 hover:bg-neutral-100 dark:hover:bg-neutral-900 flex items-center justify-center text-neutral-600 dark:text-neutral-400 transition-all">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/in/moein-robati-2b3445413" target="_blank" class="w-10 h-10 rounded-xl border border-neutral-200 dark:border-neutral-800/80 hover:border-accent-violet/40 hover:bg-neutral-100 dark:hover:bg-neutral-900 flex items-center justify-center text-neutral-600 dark:text-neutral-400 transition-all">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </a>
+                                <a href="https://t.me/imferari" target="_blank" class="w-10 h-10 rounded-xl border border-neutral-200 dark:border-neutral-800/80 hover:border-accent-violet/40 hover:bg-neutral-100 dark:hover:bg-neutral-900 flex items-center justify-center text-neutral-600 dark:text-neutral-400 transition-all">
+                                    <i class="fa-brands fa-telegram"></i>
+                                </a>
+                                <a href="https://www.instagram.com/moein_robati" target="_blank" class="w-10 h-10 rounded-xl border border-neutral-200 dark:border-neutral-800/80 hover:border-accent-violet/40 hover:bg-neutral-100 dark:hover:bg-neutral-900 flex items-center justify-center text-neutral-600 dark:text-neutral-400 transition-all">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-neutral-200/10 dark:border-neutral-800/10 py-12 relative z-10">
+        <div class="max-w-6xl mx-auto px-6 sm:px-8 flex flex-col sm:flex-row gap-6 items-center justify-between text-center sm:text-start text-xs font-bold text-neutral-400 uppercase tracking-widest">
+            <div class="flex items-center gap-3"></div>
+            <p class="text-[10px] font-semibold tracking-normal text-neutral-500 normal-case" data-i18n="footer_rights">© 2026 Moein Robati. Crafted with minimalism.</p>
+        </div>
+    </footer>
+
+    <!-- Linking External Script -->
+    <script src="script.js" defer></script>
+</body>
+</html>
